@@ -1,0 +1,9 @@
+.config/
+.ionide/
+bin/
+obj/
+packages/
+
+#Paket dependency manager
+.paket/
+paket-files/
