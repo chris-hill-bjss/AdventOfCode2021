@@ -18,7 +18,7 @@ module AdventClient =
 
     let downloadInputForDay (day:int) =
         let sessionCookieValue = AdventConfiguration.configuration.AdventClient.Cookie
-
+        
         Request.createUrl Get $"https://adventofcode.com/2021/day/{day}/input"
         |> Request.cookie (Cookie.create("session", sessionCookieValue))
         |> Request.responseAsString

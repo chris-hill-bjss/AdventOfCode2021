@@ -3,8 +3,8 @@ open AdventOfCode2021.Solutions
 [<EntryPoint>]
 let Main(_) =
 
-    DayOne.testInput
-    // |> DayOne.partOne
+    DayOne.getInput()
+    |> DayOne.partOne
     |> printfn "%A"
 
     0

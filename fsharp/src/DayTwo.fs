@@ -10,7 +10,7 @@ module DayTwo =
         Aim : int
     }
 
-    let testInput = [|
+    let getTestInput () = [|
         "forward", 5
         "down", 5
         "forward", 8
@@ -19,7 +19,7 @@ module DayTwo =
         "forward", 2
     |]
 
-    let input = 
+    let getInput () = 
         AdventClient.getInputForDay 2
         |> Seq.map (fun s -> (s.Split(' ')[0], System.Int32.Parse(s.Split(' ')[1])))
         |> Seq.toArray

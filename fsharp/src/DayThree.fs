@@ -4,7 +4,7 @@ module DayThree =
 
     open AdventOfCode2021.Http
     
-    let testInput = [|
+    let getTestInput () = [|
         "00100",
         "11110",
         "10110",
@@ -19,7 +19,7 @@ module DayThree =
         "01010"
     |]
 
-    let input = 
+    let getInput () = 
         AdventClient.getInputForDay 3
 
     let partOne (input:string[]) =

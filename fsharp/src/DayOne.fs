@@ -4,7 +4,7 @@ module DayOne =
 
     open AdventOfCode2021.Http
     
-    let testInput = [|
+    let getTestInput () = [|
         199
         200
         208
@@ -17,7 +17,7 @@ module DayOne =
         263
     |]
 
-    let input = 
+    let getInput () = 
         AdventClient.getInputForDay 1 
         |> Seq.map System.Int32.Parse 
         |> Seq.toArray
