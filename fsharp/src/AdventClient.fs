@@ -4,6 +4,7 @@ module AdventClient =
 
     open Hopac
     open HttpFs.Client
+    open AdventOfCode2021.Config
 
     let readFile fileName =
         System.IO.File.ReadAllText(fileName)
@@ -16,9 +17,10 @@ module AdventClient =
         System.IO.File.WriteAllText (fileName, content)
 
     let downloadInputForDay (day:int) =
+        let sessionCookieValue = AdventConfiguration.configuration.AdventClient.Cookie
 
         Request.createUrl Get $"https://adventofcode.com/2021/day/{day}/input"
-        |> Request.cookie (Cookie.create("session","<yourcookiegoesvaluehere>"))
+        |> Request.cookie (Cookie.create("session", sessionCookieValue))
         |> Request.responseAsString
         |> run
         |> String.trim
