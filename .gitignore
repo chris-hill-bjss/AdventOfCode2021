@@ -1,8 +1,9 @@
-.config/
 .ionide/
 bin/
 obj/
 packages/
+input/
+scratch/
 
 #Paket dependency manager
 .paket/
