@@ -1,11 +1,10 @@
-﻿
-open AdventOfCode2021.Solutions
+﻿open AdventOfCode2021.Solutions
 
 [<EntryPoint>]
 let Main(_) =
 
-    DayThree.testInput
-    |> DayThree.partOne
-    |> printfn "%A"
-    
+    // DayThree.testInput
+    // |> DayThree.partOne
+    // |> printfn "%A"
+
     0

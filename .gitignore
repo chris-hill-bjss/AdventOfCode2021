@@ -1,9 +1,12 @@
 .ionide/
+.vs/
 bin/
 obj/
 packages/
 input/
 scratch/
+
+appsettings.local.json
 
 #Paket dependency manager
 .paket/

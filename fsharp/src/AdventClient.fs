@@ -16,6 +16,7 @@ module AdventClient =
         System.IO.File.WriteAllText (fileName, content)
 
     let downloadInputForDay (day:int) =
+
         Request.createUrl Get $"https://adventofcode.com/2021/day/{day}/input"
         |> Request.cookie (Cookie.create("session","<yourcookiegoesvaluehere>"))
         |> Request.responseAsString

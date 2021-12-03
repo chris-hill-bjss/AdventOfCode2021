@@ -1,2 +1,5 @@
 Hopac
 Http.fs
+Microsoft.Extensions.Configuration
+Microsoft.Extensions.Configuration.Json
+Microsoft.Extensions.Options.ConfigurationExtensions

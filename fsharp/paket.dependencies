@@ -2,3 +2,6 @@ source https://api.nuget.org/v3/index.json
 
 nuget Hopac
 nuget Http.fs
+nuget Microsoft.Extensions.Configuration
+nuget Microsoft.Extensions.Configuration.Json
+nuget Microsoft.Extensions.Options.ConfigurationExtensions
