@@ -3,12 +3,12 @@ open AdventOfCode2021.Solutions
 [<EntryPoint>]
 let Main(_) =
 
-    DayTwo.getInput()
-    |> DayTwo.solve DayTwo.partOneCommandProcessor
+    DayThree.getInput()
+    |> DayThree.partOne
     |> printfn "%A"
 
-    DayTwo.getInput()
-    |> DayTwo.solve DayTwo.partTwoCommandProcessor
+    DayThree.getInput()
+    |> DayThree.partTwo
     |> printfn "%A"
 
     0

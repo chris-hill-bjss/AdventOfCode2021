@@ -26,9 +26,6 @@ int SolvePartTwo(IList<string> input)
 {
 	var oxyGenRating = FindRating(input, 0, v => v >= 0.5 ? '1' : '0');
 	var c02ScrubberRating = FindRating(input, 0, v => v >= 0.5 ? '0' : '1');
-	
-	oxyGenRating.Dump();
-	c02ScrubberRating.Dump();
 
 	var o = Convert.ToInt32(oxyGenRating, 2);
 	var c = Convert.ToInt32(c02ScrubberRating, 2);
