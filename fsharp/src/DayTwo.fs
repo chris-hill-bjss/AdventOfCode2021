@@ -10,40 +10,41 @@ module DayTwo =
         Aim : int
     }
 
-    let getTestInput () = [|
+    let getTestInput () = [
         "forward", 5
         "down", 5
         "forward", 8
         "up", 3
         "down", 8
         "forward", 2
-    |]
+    ]
 
     let getInput () = 
         AdventClient.getInputForDay 2
         |> Seq.map (fun s -> (s.Split(' ')[0], System.Int32.Parse(s.Split(' ')[1])))
-        |> Seq.toArray
+        |> Seq.toList
 
-    let partOne (input:(string * int)[]) = 
-        let mutable state = { X = 0; Y = 0; Aim = 0 }
+    let partOneCommandProcessor direction distance state =
+        match direction with
+        | "forward" -> { X = state.X + distance; Y = state.Y; Aim = state.Aim }
+        | "up" -> { X = state.X; Y = state.Y - distance; Aim = state.Aim }
+        | "down" -> { X = state.X; Y = state.Y + distance; Aim = state.Aim }
+        | _ -> state
 
-        for direction, distance in input do
-            match direction with
-            | "forward" -> state <- { X = state.X + distance; Y = state.Y; Aim = state.Aim }
-            | "up" -> state <- { X = state.X; Y = state.Y - distance; Aim = state.Aim }
-            | "down" -> state <- { X = state.X; Y = state.Y + distance; Aim = state.Aim }
-            | _ -> ()
+    let partTwoCommandProcessor direction distance state =
+        match direction with
+        | "forward" -> { X = state.X + distance; Y = state.Y + (state.Aim * distance); Aim = state.Aim }
+        | "up" -> { X = state.X; Y = state.Y; Aim = state.Aim - distance }
+        | "down" -> { X = state.X; Y = state.Y; Aim = state.Aim + distance }
+        | _ -> state
 
-        state.X * state.Y
+    let solve (commandProcessor:string->int->SubState->SubState) (input:(string * int)list) =
 
-    let partTwo (input:(string * int)[]) = 
-        let mutable state = { X = 0; Y = 0; Aim = 0 }
+        let rec processInput input state =
+            match input with
+            | [] -> state
+            | (direction, distance) :: tail -> processInput tail (commandProcessor direction distance state)
 
-        for direction, distance in input do
-            match direction with
-            | "forward" -> state <- { X = state.X + distance; Y = state.Y + (state.Aim * distance); Aim = state.Aim }
-            | "up" -> state <- { X = state.X; Y = state.Y; Aim = state.Aim - distance }
-            | "down" -> state <- { X = state.X; Y = state.Y; Aim = state.Aim + distance }
-            | _ -> ()
+        let finalState = processInput input {X=0;Y=0;Aim=0}
 
-        state.X * state.Y
+        finalState.X * finalState.Y
