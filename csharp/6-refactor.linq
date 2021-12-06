@@ -5,7 +5,7 @@
 
 async Task Main()
 {
-	var counts = new long[9];
+	var initialCounts = new long[9];
 	
 	var ages = (await GetInput())
 		.Split(",", StringSplitOptions.RemoveEmptyEntries)
@@ -14,10 +14,10 @@ async Task Main()
 		
 	foreach (var age in ages)
 	{
-		counts[age.Key] = age.Count();
+		initialCounts[age.Key] = age.Count();
 	}
 	
-	var finalCounts = RunSimulation(counts, 256, 1);
+	var finalCounts = RunSimulation(initialCounts, 256, 1);
 	finalCounts.Sum().Dump();
 }
 
