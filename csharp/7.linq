@@ -5,9 +5,11 @@
 
 async Task Main()
 {
-	Solve(await GetInput(), CalculateFuelCostPartOne).Dump();
+	Solve(TestInput, CalculateFuelCostPartOne).Dump();
 
-	Solve(await GetInput(), CalculateFuelCostPartTwo).Dump();
+	Solve(TestInput, CalculateFuelCostPartTwo).Dump();
+
+	Solve(TestInput, CalculateFuelCostPartTwoMATH).Dump();
 }
 
 int CalculateFuelCostPartOne(int pos, (int position, int count) c)
@@ -18,7 +20,15 @@ int CalculateFuelCostPartOne(int pos, (int position, int count) c)
 int CalculateFuelCostPartTwo(int pos, (int position, int count) c)
 {
 	var distance = Math.Abs(pos - c.position);
-	var singleCrabCost = Enumerable.Range(1, distance).Sum();
+	var singleCrabCost =  Enumerable.Range(1, distance).Sum();
+
+	return singleCrabCost * c.count;
+}
+
+int CalculateFuelCostPartTwoMATH(int pos, (int position, int count) c)
+{
+	var distance = Math.Abs(pos - c.position);
+	var singleCrabCost = distance * (distance + 1) / 2;
 
 	return singleCrabCost * c.count;
 }
