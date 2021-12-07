@@ -26,7 +26,7 @@ long[] RunSimulation(long[] counts, int until, int current)
 	var newCounts = new long[9];
 	newCounts[8] = counts[0];
 	newCounts[7] = counts[8];
-	newCounts[6] = (counts[7] + counts[0]);
+	newCounts[6] = counts[7] + counts[0];
 	newCounts[5] = counts[6];
 	newCounts[4] = counts[5];
 	newCounts[3] = counts[4];
