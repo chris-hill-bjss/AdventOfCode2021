@@ -19,6 +19,7 @@ module DayOne =
 
     let getInput () = 
         AdventClient.getInputForDay 1 
+        |> String.split '\n'
         |> Seq.map System.Int32.Parse 
         |> Seq.toArray
 

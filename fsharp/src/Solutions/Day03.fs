@@ -21,6 +21,7 @@ module DayThree =
 
     let getInput () = 
         AdventClient.getInputForDay 3
+        |> String.split '\n'
 
     let getBitPositions (input:string list) = 
         [0..input[0].Length - 1]

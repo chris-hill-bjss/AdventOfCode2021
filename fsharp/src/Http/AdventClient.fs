@@ -8,7 +8,6 @@ module AdventClient =
 
     let readFile fileName =
         System.IO.File.ReadAllText(fileName)
-        |> String.split '\n'
 
     let writeFile fileName content =
         if not(System.IO.Directory.Exists("./input")) then

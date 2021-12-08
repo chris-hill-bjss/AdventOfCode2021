@@ -11,3 +11,5 @@ appsettings.local.json
 #Paket dependency manager
 .paket/
 paket-files/
+
+.fake

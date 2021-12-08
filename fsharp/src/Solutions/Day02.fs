@@ -21,6 +21,7 @@ module DayTwo =
 
     let getInput () = 
         AdventClient.getInputForDay 2
+        |> String.split '\n'
         |> Seq.map (fun s -> (s.Split(' ')[0], System.Int32.Parse(s.Split(' ')[1])))
         |> Seq.toList
 
