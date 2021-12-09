@@ -63,24 +63,21 @@ List<(int y, int x)> MapBasin(int y, int x, int[][] input, List<(int y, int x)> 
 
 IEnumerable<((int y, int x) pos, bool isLowPoint, int positionHeight)> GenerateFloorMapFromInput(int[][] input)
 {
-	return
-		Enumerable
-			.Range(0, input.Length)
-			.SelectMany(y =>
-				Enumerable
-					.Range(0, input[y].Length)
-					.Select(x =>
-					{
-						int positionHeight = input[y][x];
+	for (int y = 0; y < input.Length; y++)
+	{
+		for (int x = 0; x < input[y].Length; x++)
+		{
+			int positionHeight = input[y][x];
 
-						bool isLowPoint = 
-							GetAdjacentPoints(y, x, input)
-							.Where(adjacent => adjacent.height != -1)
-							.All(adjacent => adjacent.height > positionHeight);
+			bool isLowPoint =
+				GetAdjacentPoints(y, x, input)
+				.Where(adjacent => adjacent.height != -1)
+				.All(adjacent => adjacent.height > positionHeight);
 
-						return (pos: (y, x), isLowPoint, positionHeight);
-					}));}
-
+			yield return (pos: (y, x), isLowPoint, positionHeight);
+		}
+	}
+}
 
 async Task<int[][]> GetInput()
 {
