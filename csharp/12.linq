@@ -29,15 +29,15 @@ int Solve(string[] input, Func<Stack<string>, IEnumerable<string>> cannotVisit)
 	var map = input
 		.Select(reading => (source: reading.Split('-')[0].Trim(), neighbour: reading.Split('-')[1].Trim()))
 		.Union(input.Select(reading => (source: reading.Split('-')[1].Trim(), neighbour: reading.Split('-')[0].Trim())))
-		.OrderBy(r => r.source)
 		.Where(r => r.source != "end" && r.neighbour != "start")
 		.GroupBy(r => r.source)
-		.ToDictionary(grp => grp.Key, grp => grp.Select(reading => reading.neighbour).OrderBy(c => c).ToArray());
+		.ToDictionary(grp => grp.Key, grp => grp.Select(reading => reading.neighbour).ToArray());
 
 	var currentRoute = new Stack<string>();
 	var routes = new List<string>();
 	
 	ChartCave("start", map, currentRoute, routes, cannotVisit);
+	
 	return routes.Count();
 }
 
