@@ -19,10 +19,9 @@ internal sealed class Day15
         visited[start] = 0;
         options.Enqueue(start, 0);
 
-        var current = start;
         while(options.Count > 0)
         {
-            current = options.Dequeue();
+            var current = options.Dequeue();
 
             foreach(var adjacentNode in GetAdjacentNodes(current))
             {
