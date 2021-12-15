@@ -26,8 +26,8 @@ int[][] GrowArray(int[][] input)
             var oldX = x % input[0].Length;
             var oldVal = input[oldY][oldX];
 
-            var modY = y / 10;
-            var modX = x / 10;
+            var modY = y / input.Length;
+            var modX = x / input[0].Length;
 
             var newVal = oldVal + modY + modX;
             largeInput[y][x] = newVal > 9 ? newVal - 9 : newVal;

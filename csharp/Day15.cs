@@ -1,20 +1,22 @@
 internal sealed class Day15
 {
-    private readonly int[][] _input;
-    private readonly NodeFactory _factory;
+    private readonly Dictionary<Node, int> _nodeCostMap;
     public Day15(int[][] input)
     {
-        _input = input;
-        _factory = new NodeFactory(_input);
+        _nodeCostMap = new Dictionary<Node, int>(
+            from y in Enumerable.Range(0, input.Length)
+            from x in Enumerable.Range(0, input[0].Length)
+            select new KeyValuePair<Node, int>(new Node(y, x), input[y][x]));
     }
     public int Solve()
     {
-        var start = _factory.CreateNode((0, 0));
-        var end = _factory.CreateNode((_input.Length - 1, _input[0].Length - 1));
+        var start = new Node(0, 0);
+        var end = new Node(_nodeCostMap.Keys.MaxBy(p => p.Y)!.Y, _nodeCostMap.Keys.MaxBy(p => p.X)!.X);
 
         var options = new PriorityQueue<Node, int>();
-        var visited = new Dictionary<(int y, int x), Node>();
+        var visited = new Dictionary<Node, int>();
 
+        visited[start] = 0;
         options.Enqueue(start, 0);
 
         var current = start;
@@ -22,83 +24,32 @@ internal sealed class Day15
         {
             current = options.Dequeue();
 
-            if (!visited.TryAdd(current.Position, current))
-                continue;
-
-            foreach(var adjacentNode in GetAdjacentNodes(current, visited, _input.Length, _input[0].Length))
+            foreach(var adjacentNode in GetAdjacentNodes(current))
             {
-                options.Enqueue(adjacentNode, adjacentNode.Rank);
+                if (_nodeCostMap.ContainsKey(adjacentNode) && !visited.ContainsKey(adjacentNode))
+                {
+                    var cost = _nodeCostMap[adjacentNode] + visited[current];
+                    visited.Add(adjacentNode, cost);
+                    options.Enqueue(adjacentNode, cost);
+                }
             }
         }
 
-        return visited[end.Position].Cost;
+        return visited[end];
     }
 
-    private List<Node> GetAdjacentNodes(Node node, Dictionary<(int y, int x), Node> visited, int maxY, int maxX)
+    private List<Node> GetAdjacentNodes(Node node)
     {
-        var adjacentNodes = new List<Node>();
-
-        if (node.Position.y - 1 >= 0)
+        return new List<Node>
         {
-            var adjacent = _factory.CreateNode(node, (node.Position.y - 1, node.Position.x));
-            if (!visited.ContainsKey(adjacent.Position)) 
-                adjacentNodes.Add(adjacent);
-        }
-        if (node.Position.y + 1 < maxY)
-        {
-            var adjacent = _factory.CreateNode(node, (node.Position.y + 1, node.Position.x));
-            if (!visited.ContainsKey(adjacent.Position)) 
-                adjacentNodes.Add(adjacent);
-        }
-        if (node.Position.x - 1 >= 0)
-        {
-            var adjacent = _factory.CreateNode(node, (node.Position.y, node.Position.x - 1));
-            if (!visited.ContainsKey(adjacent.Position)) 
-                adjacentNodes.Add(adjacent);
-        }
-        if (node.Position.x + 1 < maxX)
-        {
-            var adjacent = _factory.CreateNode(node, (node.Position.y, node.Position.x + 1));
-            if (!visited.ContainsKey(adjacent.Position)) 
-                adjacentNodes.Add(adjacent);
-        }
-
-        return adjacentNodes;
+            node with { Y = node.Y - 1},
+            node with { Y = node.Y + 1},
+            node with { X = node.X - 1},
+            node with { X = node.X + 1}
+        };
     }
 
-    class NodeFactory
-    {
-        private readonly int[][] _grid;
-        private readonly (int y, int x) _targetPosition;
-        public NodeFactory(int[][] grid)
-        {
-            _grid = grid;
-            _targetPosition = (grid.Length, _grid[0].Length);
-        }
-
-        public Node CreateNode((int y, int x) position)
-        {
-            return CreateNode(null, position);
-        }
-
-        public Node CreateNode(Node? parent, (int y, int x) position)
-        {
-            var distanceToTarget = Math.Abs(position.y - _targetPosition.y) + Math.Abs(position.x - _targetPosition.x);
-            var cost = _grid[position.y][position.x] + parent?.Cost ?? 0;
-            
-            return new Node(
-                parent,
-                position,
-                distanceToTarget,
-                cost
-            );
-        }
-    }
-
-    record Node(Node? Parent, (int y, int x) Position, int DistanceToTarget, int Cost)
-    {
-        public int Rank => DistanceToTarget + Cost;
-    }
+    record Node(int Y, int X);
 
     public static int[][] TestInput = @"1163751742
 1381373672
