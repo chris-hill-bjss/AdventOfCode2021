@@ -37,6 +37,30 @@ internal sealed class Day15
         return visited[end];
     }
 
+    public int[][] GrowArray(int[][] input)
+    {
+        var largeInput = new int[input.Length * 5][];
+
+        for (int y = 0; y < largeInput.Length; y++)
+        {
+            largeInput[y] = new int[input[0].Length * 5];
+            for (int x = 0; x < largeInput[0].Length; x++)
+            {
+                var oldY = y % input.Length;
+                var oldX = x % input[0].Length;
+                var oldVal = input[oldY][oldX];
+
+                var modY = y / input.Length;
+                var modX = x / input[0].Length;
+
+                var newVal = oldVal + modY + modX;
+                largeInput[y][x] = newVal > 9 ? newVal - 9 : newVal;
+            }
+        }
+
+        return largeInput;
+    }
+
     private List<Node> GetAdjacentNodes(Node node)
     {
         return new List<Node>
