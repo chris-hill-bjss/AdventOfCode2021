@@ -1,3 +1,5 @@
+using System.Text;
+
 internal sealed class Day16
 {
     private readonly string _input;
@@ -7,7 +9,7 @@ internal sealed class Day16
         _input = input;
     }
 
-    public int Solve()
+    public int SolvePartOne()
     {
         var packet = MessageToPacket();
         
@@ -19,7 +21,16 @@ internal sealed class Day16
         return accumulator.Sum();
     }
 
-    private int SumPacketVersions(Packet packet, List<int> accumulator)
+    public long SolvePartTwo()
+    {
+        var packet = MessageToPacket();
+        
+        var (parentPacket, _) = ReadPacket(packet);
+
+        return parentPacket.value;
+    }
+
+    private void SumPacketVersions(Packet packet, List<int> accumulator)
     {
         accumulator.Add(packet.version);
         
@@ -27,8 +38,6 @@ internal sealed class Day16
         {
             SumPacketVersions(subPacket, accumulator);
         }
-
-        return 0;
     }
 
     private (Packet packet, int packetLength) ReadPacket(string packet)
@@ -38,19 +47,21 @@ internal sealed class Day16
         var version = Convert.ToInt32(packet[pos..(pos+=3)], 2);
         var type = Convert.ToInt32(packet[pos..(pos+=3)], 2);
 
-        var numbers = new List<string>();
+        long value = 0;
         var subPackets = new List<Packet>();
 
         if (type == 4)
         {
+            var sb = new StringBuilder();
             while(true)
             {
                 var bits = packet[pos..(pos+=5)];
-                numbers.Add(bits[1..]);
+                sb.Append(bits[1..]);
 
                 if (bits[0] == '0')
                     break;
             }
+            value = Convert.ToInt64(sb.ToString(), 2);
         }
         else
         {
@@ -78,13 +89,23 @@ internal sealed class Day16
                     pos+= subPacketLength;
                 }
             }
-            
-        }
 
-        return (new Packet(version, type, subPackets, numbers), pos);
+            value = type switch
+            {
+                0 => subPackets.Sum(p => p.value),
+                1 => subPackets.Select(p => p.value).Aggregate((a, b) => a * b),
+                2 => subPackets.MinBy(p => p.value)!.value,
+                3 => subPackets.MaxBy(p => p.value)!.value,
+                5 => Convert.ToInt32(subPackets.First().value > subPackets.Last().value),
+                6 => Convert.ToInt32(subPackets.First().value < subPackets.Last().value),
+                7 => Convert.ToInt32(subPackets.First().value == subPackets.Last().value),
+                _ => 0
+            }; 
+        }
+        return (new Packet(version, type, subPackets, value), pos);
     }
 
-    record Packet(int version, int type, IList<Packet> subPackets, List<string> number);
+    record Packet(int version, int type, IList<Packet> subPackets, long value);
 
     private string MessageToPacket() =>
         string.Join(
@@ -93,7 +114,7 @@ internal sealed class Day16
                 .Range(0, _input.Length)
                 .Select(i => Convert.ToString(Convert.ToByte(_input.Substring(i, 1), 16), 2).PadLeft(4, '0')));
 
-    public static string[] TestInputs = new[] 
+    public static string[] PartOneTestInputs = new[] 
     {
         "D2FE28",
         "38006F45291200",
@@ -102,5 +123,17 @@ internal sealed class Day16
         "620080001611562C8802118E34",
         "C0015000016115A2E0802F182340",
         "A0016C880162017C3686B18A3D4780"
+    };
+
+    public static string[] PartTwoTestInputs = new[] 
+    {
+        "C200B40A82",
+        "04005AC33890",
+        "880086C3E88112",
+        "CE00C43D881120",
+        "D8005AC2A8F0",
+        "F600BC2D8F",
+        "9C005AC2F8F0",
+        "9C0141080250320F1802104A08"
     };
 }
