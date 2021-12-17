@@ -1,13 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-var input = File.ReadAllText("./csharp/input/day16.txt");
+var input = File.ReadAllText("./input/day17.txt");
 
-foreach(var testInput in Day16.PartTwoTestInputs)
-{
-    var day16Test = new Day16(testInput);
-    Console.WriteLine(day16Test.SolvePartTwo());
-}
+var day17Test = new Day17(Day17.TestInput);
+Console.WriteLine(day17Test.Solve());
 
-var day16 = new Day16(input);
-Console.WriteLine(day16.SolvePartTwo());
+var day17 = new Day17(input);
+Console.WriteLine(day17.Solve());
