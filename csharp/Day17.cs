@@ -16,12 +16,10 @@ internal sealed class Day17
         
         var sumX = 0;
         var minX = Enumerable.Range(0, targetAreaMinX).First(i => (sumX+=i) > targetAreaMinX);
-        var maxY = Math.Abs(targetArea.MinBy(t => t.y)!.y);
+        var maxY = Math.Abs(targetArea.MinBy(t => t.y)!.y) - 1;
 
-        var validVelocities =
-            LaunchProbe(new Point(minX, 0), maxY, targetArea, new List<(int maxY, Point velocity)>());
-        
-        return validVelocities.MaxBy(v => v.maxY).maxY;
+        var trajectory = CalculateProbeArc(minX, maxY, targetArea, new Stack<Point>(new[] { new Point(0, 0) } ));
+        return trajectory.MaxBy(p => p.y)!.y;
     }
 
     IEnumerable<(int maxY, Point velocity)> LaunchProbe(
