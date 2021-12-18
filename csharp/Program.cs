@@ -1,17 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-var input = File.ReadAllText("./input/day17.txt");
+var input = File.ReadAllLines("./input/day18.txt");
 
-var day17Test = new Day17(Day17.TestInput);
-Console.WriteLine(day17Test.SolvePartOne());
-
-var day17 = new Day17(input);
-Console.WriteLine(day17.SolvePartOne());
+var day18P1Test = new Day18(Day18.TestInput);
+Console.WriteLine(day18P1Test.SolvePartOne());
 
 
-var day17P2Test = new Day17(Day17.TestInput);
-Console.WriteLine(day17Test.SolvePartTwo());
-
-var day17P2 = new Day17(input);
-Console.WriteLine(day17.SolvePartTwo());
+var day18P2Test = new Day18(input);
+Console.WriteLine(day18P2Test.SolvePartTwo());
