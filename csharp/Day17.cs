@@ -9,36 +9,62 @@ internal sealed class Day17
         _input = input;
     }
 
-    public int Solve()
+    public int SolvePartOne()
     {
         var targetArea = ParseInput(_input);
         var targetAreaMinX = targetArea.MinBy(p => p.x)!.x;
         
-        var sumX = 0;
-        var minX = Enumerable.Range(0, targetAreaMinX).First(i => (sumX+=i) > targetAreaMinX);
+        var minX = CalcTriangleNumber(targetAreaMinX);
         var maxY = Math.Abs(targetArea.MinBy(t => t.y)!.y) - 1;
 
         var trajectory = CalculateProbeArc(minX, maxY, targetArea, new Stack<Point>(new[] { new Point(0, 0) } ));
         return trajectory.MaxBy(p => p.y)!.y;
     }
 
-    IEnumerable<(int maxY, Point velocity)> LaunchProbe(
-        Point velocity, 
-        int maxY,
-        IList<Point> targetArea, 
-        List<(int maxY, Point velocity)> validVelocities)
+    public int SolvePartTwo()
     {
-        var probePositions = CalculateProbeArc(velocity.x, velocity.y, targetArea, new Stack<Point>(new[] { new Point(0, 0) } ));
-        if (probePositions.Any(p => targetArea.Contains(p)))
+        var targetArea = ParseInput(_input);
+        
+        var targetAreaMinX = targetArea.MinBy(p => p.x)!.x;
+        var targetAreaMaxX = targetArea.MaxBy(p => p.x)!.x;
+        
+        var minX = CalcTriangleNumber(targetAreaMinX);
+        var maxX = targetAreaMaxX;
+        
+        var maxY = Math.Abs(targetArea.MinBy(t => t.y)!.y) - 1;
+        var minY = targetArea.MinBy(p => p.y)!.y;
+
+        var velocities = new Stack<Point>(
+            from x in Enumerable.Range(minX, (maxX - minX) + 1)
+            from y in Enumerable.Range(minY, (maxY - minY) + 1)
+            select new Point(x, y));
+
+        var validVelocities = SimulateProbes(velocities, targetArea, new List<(int maxY, Point velocity)>());
+
+        return validVelocities.Count;
+    }
+
+    int CalcTriangleNumber(int target)
+    {
+        var sum = 0;
+        return Enumerable.Range(0, target).First(i => (sum+=i) > target);
+    }
+    
+    IList<(int maxY, Point velocity)> SimulateProbes(
+        Stack<Point> velocities, 
+        IList<Point> targetArea, 
+        IList<(int maxY, Point velocity)> validVelocities)
+    {
+        while(velocities.Any())
         {
-            validVelocities.Add((probePositions.MaxBy(p => p.y)!.y, new Point(velocity.x, velocity.y)));
+            var velocity = velocities.Pop();
+            var probePositions = CalculateProbeArc(velocity.x, velocity.y, targetArea, new Stack<Point>(new[] { new Point(0, 0) } ));
+            if (probePositions.Any(p => targetArea.Contains(p)))
+            {
+                validVelocities.Add((probePositions.MaxBy(p => p.y)!.y, new Point(velocity.x, velocity.y)));
+            }
         }
         
-        if (velocity.y < maxY)
-        {
-            LaunchProbe(velocity with { y = velocity.y + 1 }, maxY, targetArea, validVelocities);
-        }
-
         return validVelocities;
     }
 
