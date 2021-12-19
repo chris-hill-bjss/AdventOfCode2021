@@ -1,11 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-var input = File.ReadAllLines("./input/day18.txt");
+var input = File.ReadAllText("./input/day19.txt").Split("\n\n", StringSplitOptions.RemoveEmptyEntries);
 
-var day18P1Test = new Day18(Day18.TestInput);
-Console.WriteLine(day18P1Test.SolvePartOne());
-
-
-var day18P2Test = new Day18(input);
-Console.WriteLine(day18P2Test.SolvePartTwo());
+Console.WriteLine(new Day19(input).SolvePartOne());
+Console.WriteLine(new Day19(input).SolvePartTwo());
