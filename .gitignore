@@ -7,9 +7,12 @@ input/
 scratch/
 
 appsettings.local.json
-
 #Paket dependency manager
 .paket/
 paket-files/
 
 .fake
+
+#go
+**/test-config.json
+**/.idea
