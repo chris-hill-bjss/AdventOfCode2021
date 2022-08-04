@@ -1,7 +1,7 @@
 package dayone
 
 import (
-	. "aoc/internal/inputparser"
+	. "aoc/internal/tests/inputparser"
 )
 
 type dayOne struct {

@@ -5,9 +5,10 @@ import (
 
 	dayone "aoc/cmd/01_dayone"
 
-	. "aoc/internal/tests/assertions"
+	"aoc/internal/tests/adventclient"
 
-	"aoc/internal/tests/context"
+	. "aoc/internal/tests/assertions"
+	. "aoc/internal/tests/config"
 )
 
 const sampleInput = `199
@@ -21,72 +22,63 @@ const sampleInput = `199
 260
 263`
 
-func TestDayOneWithSampleInput(t *testing.T) {
-	t.Log("Running tests for DayOne with sample input")
-	{
-		t.Log("PartOne")
-		{
-			partOneSample(t)
-		}
-		t.Log("PartTwo")
-		{
-			partTwoSample(t)
-		}
+func TestPartOne(t *testing.T) {
+	tests := []struct {
+		name      string
+		readInput func(t *testing.T) []byte
+		expected  int
+	}{
+		{"sample", readSampleInput, 7},
+		{"actual", readActualInput, 1215},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Log("Running tests with " + test.name + " input")
+			{
+				dayOne := dayone.NewDayOne(test.readInput(t))
+				actual := dayOne.RunPartOne()
+
+				Assert(t).Equals(test.expected, actual)
+			}
+		})
 	}
 }
 
-func TestDayOneWithActualInput(t *testing.T) {
-	t.Log("Running tests for DayOne with actual input")
-	{
-		t.Log("PartOne")
-		{
-			partOneActual(t)
-		}
-		t.Log("PartTwo")
-		{
-			partTwoActual(t)
-		}
+func TestPartTwo(t *testing.T) {
+	tests := []struct {
+		name      string
+		readInput func(t *testing.T) []byte
+		expected  int
+	}{
+		{"sample", readSampleInput, 5},
+		{"actual", readActualInput, 1150},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Log("Running tests with " + test.name + " input")
+			{
+				dayOne := dayone.NewDayOne(test.readInput(t))
+				actual := dayOne.RunPartTwo()
+
+				Assert(t).Equals(test.expected, actual)
+			}
+		})
 	}
 }
 
-func partOneSample(t *testing.T) {
-	dayOne := dayone.NewDayOne([]byte(sampleInput))
-	actual := dayOne.RunPartOne()
-
-	Assert(t).Equals(7, actual)
+func readSampleInput(t *testing.T) []byte {
+	return []byte(sampleInput)
 }
 
-func partTwoSample(t *testing.T) {
-	dayOne := dayone.NewDayOne([]byte(sampleInput))
-	actual := dayOne.RunPartTwo()
+func readActualInput(t *testing.T) []byte {
+	client := adventclient.NewAdventClient(Config.BaseUrl, Config.SessionToken)
 
-	Assert(t).Equals(5, actual)
-}
-
-func partOneActual(t *testing.T) {
-	context := context.NewContext()
-
-	input, err := context.AdventClient.GetInput(1)
+	actual, err := client.GetInput(1)
 	if err != nil {
 		Assert(t).Fail("failed to read input from AoC")
 	}
 
-	dayOne := dayone.NewDayOne(input)
-	actual := dayOne.RunPartOne()
-
-	Assert(t).Equals(1215, actual)
-}
-
-func partTwoActual(t *testing.T) {
-	context := context.NewContext()
-
-	input, err := context.AdventClient.GetInput(1)
-	if err != nil {
-		Assert(t).Fail("failed to read input from AoC")
-	}
-
-	dayOne := dayone.NewDayOne(input)
-	actual := dayOne.RunPartTwo()
-
-	Assert(t).Equals(1150, actual)
+	return actual
 }
