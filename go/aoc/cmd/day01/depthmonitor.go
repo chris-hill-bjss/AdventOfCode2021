@@ -1,19 +1,19 @@
-package dayone
+package day01
 
 import (
 	. "aoc/internal/tests/inputparser"
 )
 
-type dayOne struct {
+type depthMonitor struct {
 	readings []int
 }
 
-func NewDayOne(input []byte) *dayOne {
+func NewDepthMonitor(input []byte) *depthMonitor {
 	readings := MapArray(ToStringArray(input), StringToInt)
-	return &dayOne{readings}
+	return &depthMonitor{readings}
 }
 
-func (d *dayOne) RunPartOne() int {
+func (d *depthMonitor) Incremental() int {
 	var prev, increments int
 
 	for _, depth := range d.readings {
@@ -27,7 +27,7 @@ func (d *dayOne) RunPartOne() int {
 	return increments
 }
 
-func (d *dayOne) RunPartTwo() int {
+func (d *depthMonitor) Windowed() int {
 	var prev, increments int
 
 	for i := range d.readings {

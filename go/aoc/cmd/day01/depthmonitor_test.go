@@ -1,10 +1,9 @@
-package dayone_test
+package day01_test
 
 import (
 	"testing"
 
-	dayone "aoc/cmd/01_dayone"
-
+	"aoc/cmd/day01"
 	"aoc/internal/tests/adventclient"
 
 	. "aoc/internal/tests/assertions"
@@ -22,7 +21,7 @@ const sampleInput = `199
 260
 263`
 
-func TestPartOne(t *testing.T) {
+func TestDepthMonitorIncremental(t *testing.T) {
 	tests := []struct {
 		name      string
 		readInput func(t *testing.T) []byte
@@ -36,8 +35,8 @@ func TestPartOne(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Log("Running tests with " + test.name + " input")
 			{
-				dayOne := dayone.NewDayOne(test.readInput(t))
-				actual := dayOne.RunPartOne()
+				monitor := day01.NewDepthMonitor(test.readInput(t))
+				actual := monitor.Incremental()
 
 				Assert(t).Equals(test.expected, actual)
 			}
@@ -45,7 +44,7 @@ func TestPartOne(t *testing.T) {
 	}
 }
 
-func TestPartTwo(t *testing.T) {
+func TestDepthMonitorWindowed(t *testing.T) {
 	tests := []struct {
 		name      string
 		readInput func(t *testing.T) []byte
@@ -59,8 +58,8 @@ func TestPartTwo(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Log("Running tests with " + test.name + " input")
 			{
-				dayOne := dayone.NewDayOne(test.readInput(t))
-				actual := dayOne.RunPartTwo()
+				monitor := day01.NewDepthMonitor(test.readInput(t))
+				actual := monitor.Windowed()
 
 				Assert(t).Equals(test.expected, actual)
 			}
