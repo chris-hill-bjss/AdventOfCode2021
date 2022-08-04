@@ -18,7 +18,7 @@ type TestConfig struct {
 const success = "\u2713"
 const failure = "\u2717"
 
-const partOneSampleInput = `199
+const sampleInput = `199
 200
 208
 210
@@ -29,31 +29,75 @@ const partOneSampleInput = `199
 260
 263`
 
-func TestDayOne(t *testing.T) {
+func TestPartOne(t *testing.T) {
 	t.Log("Running tests for PartOne")
 	{
-		t.Logf("\t\twith sample input")
-		{
-			dayOne := dayOne.NewDayOne([]byte(partOneSampleInput))
-			actual := dayOne.RunPartOne()
+		partOneSample(t)
+		partOneActual(t)
+	}
+}
 
-			assert(7, actual, t)
+func TestPartTwo(t *testing.T) {
+	t.Log("Running tests for PartTwo")
+	{
+		partTwoSample(t)
+		partTwoActual(t)
+	}
+}
+
+func partOneSample(t *testing.T) {
+	t.Logf("\t\twith sample input")
+	{
+		dayOne := dayOne.NewDayOne([]byte(sampleInput))
+		actual := dayOne.RunPartOne()
+
+		assert(7, actual, t)
+	}
+}
+
+func partOneActual(t *testing.T) {
+	t.Logf("\t\twith actual input")
+	{
+		config := getConfig()
+		client := adventclient.NewAdventClient(config.BaseUrl, config.SessionToken)
+
+		input, err := client.GetInput(1)
+		if err != nil {
+			t.Fatalf("\t\t%s\tfailed to read input from AoC", failure)
 		}
-		t.Logf("\t\twith actual input")
-		{
-			config := getConfig()
-			client := adventclient.NewAdventClient(config.BaseUrl, config.SessionToken)
 
-			input, err := client.GetInput(1)
-			if err != nil {
-				t.Fatalf("\t\t%s\tfailed to read input from AoC", failure)
-			}
+		dayOne := dayOne.NewDayOne([]byte(input))
+		actual := dayOne.RunPartOne()
 
-			dayOne := dayOne.NewDayOne([]byte(input))
-			actual := dayOne.RunPartOne()
+		assert(1215, actual, t)
+	}
+}
 
-			assert(1215, actual, t)
+func partTwoSample(t *testing.T) {
+	t.Logf("\t\twith sample input")
+	{
+		dayOne := dayOne.NewDayOne([]byte(sampleInput))
+		actual := dayOne.RunPartTwo()
+
+		assert(5, actual, t)
+	}
+}
+
+func partTwoActual(t *testing.T) {
+	t.Logf("\t\twith actual input")
+	{
+		config := getConfig()
+		client := adventclient.NewAdventClient(config.BaseUrl, config.SessionToken)
+
+		input, err := client.GetInput(1)
+		if err != nil {
+			t.Fatalf("\t\t%s\tfailed to read input from AoC", failure)
 		}
+
+		dayOne := dayOne.NewDayOne([]byte(input))
+		actual := dayOne.RunPartTwo()
+
+		assert(1150, actual, t)
 	}
 }
 
@@ -66,7 +110,7 @@ func assert(expected int, actual int, t *testing.T) {
 }
 
 func getConfig() TestConfig {
-	content, err := os.ReadFile("../tests/test-config.json")
+	content, err := os.ReadFile("../../test-config.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -79,12 +123,3 @@ func getConfig() TestConfig {
 
 	return config
 }
-
-// func readConfigFile(filename string) []byte {
-// 	content, err := os.ReadFile("test-config.json")
-// 	if err != nil {
-// 		log.Panic(err)
-// 	}
-
-// 	return content
-// }
