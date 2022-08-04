@@ -1,28 +1,22 @@
 package dayone
 
 import (
-	"log"
-	"strconv"
-	"strings"
+	. "aoc/internal/inputparser"
 )
 
 type dayOne struct {
-	input []byte
+	readings []int
 }
 
-func NewDayOne(content []byte) *dayOne {
-	return &dayOne{content}
+func NewDayOne(input []byte) *dayOne {
+	readings := MapArray(ToStringArray(input), StringToInt)
+	return &dayOne{readings}
 }
 
 func (d *dayOne) RunPartOne() int {
 	var prev, increments int
 
-	for _, line := range strings.Split(strings.TrimSpace(string(d.input)), "\n") {
-		depth, err := strconv.Atoi(line)
-		if err != nil {
-			log.Fatal(err)
-		}
-
+	for _, depth := range d.readings {
 		if prev > 0 && depth > prev {
 			increments++
 		}
@@ -36,16 +30,15 @@ func (d *dayOne) RunPartOne() int {
 func (d *dayOne) RunPartTwo() int {
 	var prev, increments int
 
-	readings := stringArrayToIntArray(strings.Split(strings.TrimSpace(string(d.input)), "\n"))
-	for i := range readings {
+	for i := range d.readings {
 
 		rangeEnd := i + 3
-		if rangeEnd > len(readings) {
+		if rangeEnd > len(d.readings) {
 			break
 		}
 
 		var sumDepth int
-		depths := readings[i : i+3]
+		depths := d.readings[i : i+3]
 		for _, v := range depths {
 			sumDepth += v
 		}
@@ -58,20 +51,4 @@ func (d *dayOne) RunPartTwo() int {
 	}
 
 	return increments
-}
-
-func stringArrayToIntArray(slice []string) []int {
-	out := make([]int, len(slice))
-	for i, v := range slice {
-		out[i] = stringToInt(v)
-	}
-	return out
-}
-func stringToInt(input string) int {
-	value, err := strconv.Atoi(input)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return value
 }
