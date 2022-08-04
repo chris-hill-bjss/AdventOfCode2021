@@ -37,7 +37,7 @@ func (d *dayOne) RunPartTwo() int {
 	var prev, increments int
 
 	readings := stringArrayToIntArray(strings.Split(strings.TrimSpace(string(d.input)), "\n"))
-	for i, _ := range readings {
+	for i := range readings {
 
 		rangeEnd := i + 3
 		if rangeEnd > len(readings) {
