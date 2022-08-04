@@ -1,7 +1,7 @@
 package day01
 
 import (
-	. "aoc/internal/tests/inputparser"
+	. "aoc/internal/inputparser"
 )
 
 type depthMonitor struct {
