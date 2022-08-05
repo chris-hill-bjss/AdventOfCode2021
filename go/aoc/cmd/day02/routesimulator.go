@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	. "aoc/internal/inputparser"
+	. "aoc/internal/utility"
 )
 
 type instruction struct {
@@ -16,7 +17,7 @@ type routeSimulator struct {
 }
 
 func NewRouteSimulator(input []byte) *routeSimulator {
-	instructions := MapArray(ToStringArray(input), stringToInstruction)
+	instructions := Map(ToStringArray(input), stringToInstruction)
 	return &routeSimulator{instructions}
 }
 

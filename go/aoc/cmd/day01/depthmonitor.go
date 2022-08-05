@@ -2,6 +2,7 @@ package day01
 
 import (
 	. "aoc/internal/inputparser"
+	. "aoc/internal/utility"
 )
 
 type depthMonitor struct {
@@ -9,7 +10,7 @@ type depthMonitor struct {
 }
 
 func NewDepthMonitor(input []byte) *depthMonitor {
-	readings := MapArray(ToStringArray(input), StringToInt)
+	readings := Map(ToStringArray(input), StringToInt)
 	return &depthMonitor{readings}
 }
 
