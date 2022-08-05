@@ -11,7 +11,9 @@ type testConfig struct {
 	SessionToken string
 }
 
-var Config = loadConfig()
+func NewTestConfig() *testConfig {
+	return loadConfig()
+}
 
 func loadConfig() *testConfig {
 	content, err := os.ReadFile("../../test-config.json")

@@ -72,7 +72,8 @@ func readSampleInput(t *testing.T) []byte {
 }
 
 func readActualInput(t *testing.T) []byte {
-	client := adventclient.NewAdventClient(Config.BaseUrl, Config.SessionToken)
+	config := NewTestConfig()
+	client := adventclient.NewAdventClient(config.BaseUrl, config.SessionToken)
 
 	actual, err := client.GetInput(1)
 	if err != nil {
