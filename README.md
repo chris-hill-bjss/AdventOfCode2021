@@ -2,4 +2,4 @@
 
 Solutions for advent of code 2021 in various languages.
 
-Currently learning go an playing with github workflows.
+Currently learning go and playing with github workflows.
